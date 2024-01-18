@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Objects>
+	<Student>
+		<firstname type="String">Federico</firstname>
+		<surname type="String">Ramacciotti</surname>
+		<age type="int">24</age>
+	</Student>
+	<notXMLable />
+	<Teacher>
+		<firstname type="String">Robert</firstname>
+		<surname type="String">Oppenheimer</surname>
+		<inactivity type="boolean">false</inactivity>
+	</Teacher>
+</Objects>
