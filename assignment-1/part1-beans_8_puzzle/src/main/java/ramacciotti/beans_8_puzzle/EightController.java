@@ -24,7 +24,7 @@ public class EightController extends JLabel implements VetoableChangeListener, P
 
     /**
      * Given the label, find the position of the label in the array
-     * 
+     *
      * @param label
      * @return index of the label in the array, -1 if not found
      */
@@ -39,7 +39,7 @@ public class EightController extends JLabel implements VetoableChangeListener, P
 
     /**
      * Given two positions in the array, find if they're adjacent
-     * 
+     *
      * @param pos1
      * @param pos2
      * @return true if pos1 adj pos, false otherwise
@@ -70,9 +70,10 @@ public class EightController extends JLabel implements VetoableChangeListener, P
 
     /**
      * Handle change of label based on event
-     * 
+     *
      * @param evt
-     * @throws PropertyVetoException if clicked on hole OR if old and hole are not adjacent
+     * @throws PropertyVetoException if clicked on hole OR if old and hole are
+     * not adjacent
      */
     private void handleLabel(PropertyChangeEvent evt) throws PropertyVetoException {
         int oldLabel = (int) evt.getOldValue();
@@ -81,7 +82,7 @@ public class EightController extends JLabel implements VetoableChangeListener, P
 
         int pos1 = getPosOfLabel(oldLabel);
         int pos2 = getPosOfLabel(newLabel);
-        
+
         // veto if not ok
         if (oldLabel == hole || !arePosAdjacent(pos1, pos2)) {
             this.setText("KO");
@@ -100,7 +101,7 @@ public class EightController extends JLabel implements VetoableChangeListener, P
 
     /**
      * Handle flip based on event
-     * 
+     *
      * @param evt
      * @throws PropertyVetoException if hole is not in last position
      */
@@ -109,17 +110,17 @@ public class EightController extends JLabel implements VetoableChangeListener, P
             System.out.println("CTRL cannot execute flip");
             throw new PropertyVetoException("Hole is not in last position", evt);
         }
-        
+
         this.myFirePropertyChange("label", 0, 1);
-        
+
         int temp = this.labels[0];
         this.labels[0] = this.labels[1];
         this.labels[1] = temp;
     }
 
-    /** 
+    /**
      * Handle vetoable changes (label and flip)
-     * 
+     *
      * @param evt
      * @throws PropertyVetoException according to handle label and flip
      */
@@ -136,8 +137,8 @@ public class EightController extends JLabel implements VetoableChangeListener, P
 
     /**
      * Handle property change (restart)
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
@@ -151,8 +152,8 @@ public class EightController extends JLabel implements VetoableChangeListener, P
 
     /**
      * Wrapper to add property change listener to internal private variable
-     * 
-     * @param l 
+     *
+     * @param l
      */
     public void myAddPropertyChangeListener(PropertyChangeListener l) {
         this.propertyChange.addPropertyChangeListener(l);
@@ -160,19 +161,20 @@ public class EightController extends JLabel implements VetoableChangeListener, P
 
     /**
      * Wrapper to remove property change listener to internal private variable
-     * 
-     * @param l 
+     *
+     * @param l
      */
     public void myRemovePropertyChangeListener(PropertyChangeListener l) {
         this.propertyChange.removePropertyChangeListener(l);
     }
 
     /**
-     * Fire a property change
-     * 
-     * @param propertyName 
-     * @param oldValue 
-     * @param newValue 
+     * Fire a property change. Wrapper to fire the change even if oldValue ==
+     * newValue
+     *
+     * @param propertyName
+     * @param oldValue
+     * @param newValue
      */
     public void myFirePropertyChange(String propertyName, Object oldValue, Object newValue) {
         PropertyChangeEvent evt = new PropertyChangeEvent(this.propertyChange, propertyName, oldValue, newValue);

@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.Timer;
 
@@ -39,7 +37,7 @@ public class EightTile extends JButton implements PropertyChangeListener {
 
     /**
      * Update the label, the background and the text of the tile
-     * 
+     *
      * @param newLabel
      */
     private void updateTile(int newLabel) {
@@ -70,8 +68,6 @@ public class EightTile extends JButton implements PropertyChangeListener {
         System.out.println("TILE clicked on " + this.label);
         try {
             this.fireVetoableChange("label", this.label, hole);
-
-            this.updateTile(hole);
         } catch (PropertyVetoException e) {
             this.flashTile();
         }
@@ -89,40 +85,38 @@ public class EightTile extends JButton implements PropertyChangeListener {
         timer.setRepeats(false);
         timer.start();
     }
-    
+
     /**
-     * Property change triggered:
-     * - restart: get new label from labels array, update tile
-     * - label: swap old label and new label
-     * 
-     * @param evt 
+     * Property change triggered: - restart: get new label from labels array,
+     * update tile - label: swap old label and new label
+     *
+     * @param evt
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        System.out.println("TILE property change");
         String propertyName = evt.getPropertyName();
-        
+
         if (propertyName.equals("restart")) {
-            
+
             int[] newLabels = (int[]) evt.getNewValue();
             this.updateTile(newLabels[position - 1]);
-            
+
         } else if (propertyName.equals("label")) {
             // swap the labels oldlabel and newlabel
-            
+
             int oldLabel = (int) evt.getOldValue();
             int newLabel = (int) evt.getNewValue();
-                        
+
             // if we are in the oldlabel, swap with new
             if (oldLabel == this.label) {
                 this.updateTile(newLabel);
-            } else
-                
-            // if we are in the newlabel, swap with old
+            } else // if we are in the newlabel, swap with old
             if (newLabel == this.label) {
                 this.updateTile(oldLabel);
             }
-                                    
+
         }
     }
-    
+
 }

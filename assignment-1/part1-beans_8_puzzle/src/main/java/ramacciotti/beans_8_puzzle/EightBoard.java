@@ -6,6 +6,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeSupport;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -14,7 +15,7 @@ import javax.swing.Timer;
  *
  * @author federico
  */
-public class EightBoard extends javax.swing.JFrame implements PropertyChangeListener {
+public class EightBoard extends JFrame implements PropertyChangeListener {
 
     private final EightTile[] tiles = new EightTile[9];
     private final VetoableChangeSupport veto = new VetoableChangeSupport(this);
@@ -202,19 +203,6 @@ public class EightBoard extends javax.swing.JFrame implements PropertyChangeList
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * Restart button is clicked: generate random configuration, fire a property change for restart
-     * 
-     * @param evt 
-     */
-    private void restartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_restartButtonActionPerformed
-        int[] labels = this.randomLabels();
-        this.firePropertyChange("restart", null, labels);
-        this.eightController1.setText("");
-        checkCompletion();
-        System.out.println("");
-    }//GEN-LAST:event_restartButtonActionPerformed
-
     private void eightTile1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eightTile1ActionPerformed
         if (!this.eightController1.getText().equals("START")) {
             System.out.println("BOARD click on 0");
@@ -288,10 +276,24 @@ public class EightBoard extends javax.swing.JFrame implements PropertyChangeList
     }//GEN-LAST:event_eightTile9ActionPerformed
 
     /**
-     * Flip button is clicked: if game is started, fire vetoable change
+     * Restart button is clicked: generate random configuration, fire a property
+     * change for restart
+     *
+     * @param evt
+     */
+    private void restartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_restartButtonActionPerformed
+        int[] labels = this.randomLabels();
+        this.firePropertyChange("restart", null, labels);
+        this.eightController1.setText("");
+        checkCompletion();
+        System.out.println("");
+    }//GEN-LAST:event_restartButtonActionPerformed
+
+    /**
+     * Flip button is clicked: if game is started, fire vetoable change.
      * If vetoed, flash the button red
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void flipButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flipButtonActionPerformed
         if (!this.eightController1.getText().equals("START")) {
@@ -299,9 +301,9 @@ public class EightBoard extends javax.swing.JFrame implements PropertyChangeList
 
                 this.veto.fireVetoableChange("flip", null, null);
                 checkCompletion();
-                
+
             } catch (PropertyVetoException e) {
-                
+
                 Color oldColor = this.flipButton.getBackground();
                 this.flipButton.setBackground(Color.RED);
 
@@ -315,8 +317,8 @@ public class EightBoard extends javax.swing.JFrame implements PropertyChangeList
 
     /**
      * If a property changed, fire a label change to the listeners
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
@@ -364,7 +366,7 @@ public class EightBoard extends javax.swing.JFrame implements PropertyChangeList
 
     /**
      * Generate a random configuration for the puzzle
-     * 
+     *
      * @return int[9] containing [1,9] in random order
      */
     private int[] randomLabels() {
@@ -388,7 +390,7 @@ public class EightBoard extends javax.swing.JFrame implements PropertyChangeList
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
