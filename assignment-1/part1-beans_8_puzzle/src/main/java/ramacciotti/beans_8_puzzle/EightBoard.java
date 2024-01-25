@@ -42,7 +42,7 @@ public class EightBoard extends JFrame implements PropertyChangeListener {
 
         // add listener to controller
         this.addPropertyChangeListener(eightController1);
-        eightController1.myAddPropertyChangeListener(this);
+        eightController1.addPropertyChangeListener(this);
         this.veto.addVetoableChangeListener(eightController1);
     }
 
@@ -300,7 +300,6 @@ public class EightBoard extends JFrame implements PropertyChangeListener {
             try {
 
                 this.veto.fireVetoableChange("flip", null, null);
-                checkCompletion();
 
             } catch (PropertyVetoException e) {
 
@@ -342,6 +341,7 @@ public class EightBoard extends JFrame implements PropertyChangeListener {
      * If the puzzle is completed, show a dialog for congratulations!
      */
     private void checkCompletion() {
+        System.out.println("BOARD checking completion");
         boolean isComplete = true;
 
         for (int i = 0; i < 8; i++) {

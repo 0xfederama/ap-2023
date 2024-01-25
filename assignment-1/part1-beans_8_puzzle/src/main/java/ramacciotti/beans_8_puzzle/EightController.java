@@ -2,7 +2,6 @@ package ramacciotti.beans_8_puzzle;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.util.Arrays;
@@ -16,7 +15,6 @@ public class EightController extends JLabel implements VetoableChangeListener, P
 
     private final int hole = 9;
     private int[] labels;
-    private final PropertyChangeSupport propertyChange = new PropertyChangeSupport(this);
 
     public EightController() {
         this.setText("START");
@@ -91,7 +89,7 @@ public class EightController extends JLabel implements VetoableChangeListener, P
 
         // set text and notify all listeners
         this.setText("OK");
-        this.myFirePropertyChange(evt.getPropertyName(), pos1, pos2);
+        this.firePropertyChange(evt.getPropertyName(), pos1, pos2);
 
         int temp = this.labels[pos1];
         this.labels[pos1] = this.labels[pos2];
@@ -111,7 +109,7 @@ public class EightController extends JLabel implements VetoableChangeListener, P
             throw new PropertyVetoException("Hole is not in last position", evt);
         }
 
-        this.myFirePropertyChange("label", 0, 1);
+        this.firePropertyChange("label", 0, 1);
 
         int temp = this.labels[0];
         this.labels[0] = this.labels[1];
@@ -147,39 +145,6 @@ public class EightController extends JLabel implements VetoableChangeListener, P
         if (propertyName.equals("restart")) {
             this.labels = (int[]) evt.getNewValue();
             System.out.println(Arrays.toString(this.labels));
-        }
-    }
-
-    /**
-     * Wrapper to add property change listener to internal private variable
-     *
-     * @param l
-     */
-    public void myAddPropertyChangeListener(PropertyChangeListener l) {
-        this.propertyChange.addPropertyChangeListener(l);
-    }
-
-    /**
-     * Wrapper to remove property change listener to internal private variable
-     *
-     * @param l
-     */
-    public void myRemovePropertyChangeListener(PropertyChangeListener l) {
-        this.propertyChange.removePropertyChangeListener(l);
-    }
-
-    /**
-     * Fire a property change. Wrapper to fire the change even if oldValue ==
-     * newValue
-     *
-     * @param propertyName
-     * @param oldValue
-     * @param newValue
-     */
-    public void myFirePropertyChange(String propertyName, Object oldValue, Object newValue) {
-        PropertyChangeEvent evt = new PropertyChangeEvent(this.propertyChange, propertyName, oldValue, newValue);
-        for (PropertyChangeListener l : this.propertyChange.getPropertyChangeListeners()) {
-            l.propertyChange(evt);
         }
     }
 
