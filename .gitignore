@@ -112,3 +112,4 @@ cabal.project.local
 cabal.project.local~
 .HTF/
 .ghc.environment.*
+/assignment-1/part1-beans_8_puzzle/target/

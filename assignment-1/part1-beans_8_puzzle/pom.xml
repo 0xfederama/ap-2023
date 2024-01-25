@@ -9,6 +9,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <exec.mainClass>ramacciotti.beans_8_puzzle.App</exec.mainClass>
+        <exec.mainClass>ramacciotti.beans_8_puzzle.EightBoard</exec.mainClass>
     </properties>
 </project>
