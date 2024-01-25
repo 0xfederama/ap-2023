@@ -1,12 +1,11 @@
 package ramacciotti.beans_8_puzzle;
 
+import java.awt.Color;
 import java.util.Random;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeSupport;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -17,15 +16,13 @@ import javax.swing.Timer;
  */
 public class EightBoard extends javax.swing.JFrame implements PropertyChangeListener {
 
-    private EightTile[] tiles = new EightTile[9];
-    private VetoableChangeSupport veto = new VetoableChangeSupport(this);
+    private final EightTile[] tiles = new EightTile[9];
+    private final VetoableChangeSupport veto = new VetoableChangeSupport(this);
 
-    /**
-     * Creates new form EightBoard
-     */
     public EightBoard() {
         initComponents();
 
+        // init tiles in array
         tiles[0] = eightTile1;
         tiles[1] = eightTile2;
         tiles[2] = eightTile3;
@@ -36,11 +33,13 @@ public class EightBoard extends javax.swing.JFrame implements PropertyChangeList
         tiles[7] = eightTile8;
         tiles[8] = eightTile9;
 
+        // add listeners to tiles
         for (EightTile tile : tiles) {
             tile.addVetoableChangeListener(eightController1);
             this.addPropertyChangeListener(tile);
         }
 
+        // add listener to controller
         this.addPropertyChangeListener(eightController1);
         eightController1.myAddPropertyChangeListener(this);
         this.veto.addVetoableChangeListener(eightController1);
@@ -203,13 +202,17 @@ public class EightBoard extends javax.swing.JFrame implements PropertyChangeList
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Restart button is clicked: generate random configuration, fire a property change for restart
+     * 
+     * @param evt 
+     */
     private void restartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_restartButtonActionPerformed
-        System.out.println("BOARD click on restart");
         int[] labels = this.randomLabels();
         this.firePropertyChange("restart", null, labels);
         this.eightController1.setText("");
         checkCompletion();
-        System.out.println("BOARD end click\n");
+        System.out.println("");
     }//GEN-LAST:event_restartButtonActionPerformed
 
     private void eightTile1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eightTile1ActionPerformed
@@ -217,7 +220,7 @@ public class EightBoard extends javax.swing.JFrame implements PropertyChangeList
             System.out.println("BOARD click on 0");
             tiles[0].click();
         }
-        System.out.println("BOARD end click\n");
+        System.out.println("");
     }//GEN-LAST:event_eightTile1ActionPerformed
 
     private void eightTile2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eightTile2ActionPerformed
@@ -225,7 +228,7 @@ public class EightBoard extends javax.swing.JFrame implements PropertyChangeList
             System.out.println("BOARD click on 1");
             tiles[1].click();
         }
-        System.out.println("BOARD end click\n");
+        System.out.println("");
     }//GEN-LAST:event_eightTile2ActionPerformed
 
     private void eightTile3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eightTile3ActionPerformed
@@ -233,7 +236,7 @@ public class EightBoard extends javax.swing.JFrame implements PropertyChangeList
             System.out.println("BOARD click on 2");
             tiles[2].click();
         }
-        System.out.println("BOARD end click\n");
+        System.out.println("");
     }//GEN-LAST:event_eightTile3ActionPerformed
 
     private void eightTile4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eightTile4ActionPerformed
@@ -241,7 +244,7 @@ public class EightBoard extends javax.swing.JFrame implements PropertyChangeList
             System.out.println("BOARD click on 3");
             tiles[3].click();
         }
-        System.out.println("BOARD end click\n");
+        System.out.println("");
     }//GEN-LAST:event_eightTile4ActionPerformed
 
     private void eightTile5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eightTile5ActionPerformed
@@ -249,7 +252,7 @@ public class EightBoard extends javax.swing.JFrame implements PropertyChangeList
             System.out.println("BOARD click on 4");
             tiles[4].click();
         }
-        System.out.println("BOARD end click\n");
+        System.out.println("");
     }//GEN-LAST:event_eightTile5ActionPerformed
 
     private void eightTile6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eightTile6ActionPerformed
@@ -257,7 +260,7 @@ public class EightBoard extends javax.swing.JFrame implements PropertyChangeList
             System.out.println("BOARD click on 5");
             tiles[5].click();
         }
-        System.out.println("BOARD end click\n");
+        System.out.println("");
     }//GEN-LAST:event_eightTile6ActionPerformed
 
     private void eightTile7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eightTile7ActionPerformed
@@ -265,7 +268,7 @@ public class EightBoard extends javax.swing.JFrame implements PropertyChangeList
             System.out.println("BOARD click on 6");
             tiles[6].click();
         }
-        System.out.println("BOARD end click\n");
+        System.out.println("");
     }//GEN-LAST:event_eightTile7ActionPerformed
 
     private void eightTile8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eightTile8ActionPerformed
@@ -273,7 +276,7 @@ public class EightBoard extends javax.swing.JFrame implements PropertyChangeList
             System.out.println("BOARD click on 7");
             tiles[7].click();
         }
-        System.out.println("BOARD end click\n");
+        System.out.println("");
     }//GEN-LAST:event_eightTile8ActionPerformed
 
     private void eightTile9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eightTile9ActionPerformed
@@ -281,31 +284,43 @@ public class EightBoard extends javax.swing.JFrame implements PropertyChangeList
             System.out.println("BOARD click on 8");
             tiles[8].click();
         }
-        System.out.println("BOARD end click\n");
+        System.out.println("");
     }//GEN-LAST:event_eightTile9ActionPerformed
 
+    /**
+     * Flip button is clicked: if game is started, fire vetoable change
+     * If vetoed, flash the button red
+     * 
+     * @param evt 
+     */
     private void flipButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flipButtonActionPerformed
         if (!this.eightController1.getText().equals("START")) {
-            System.out.println("BOARD click on flip");
             try {
-                String label1 = tiles[0].getLabel();
-                String label2 = tiles[1].getLabel();
-                this.veto.fireVetoableChange("flip", label1, label2);
 
-                String temp = label1;
-                tiles[0].updateLabel(Integer.parseInt(label2));
-                tiles[1].updateLabel(Integer.parseInt(temp));
+                this.veto.fireVetoableChange("flip", null, null);
+                checkCompletion();
+                
             } catch (PropertyVetoException e) {
-                System.out.println("Flip vetoed");
+                
+                Color oldColor = this.flipButton.getBackground();
+                this.flipButton.setBackground(Color.RED);
+
+                Timer timer = new Timer(200, t -> this.flipButton.setBackground(oldColor));
+                timer.setRepeats(false);
+                timer.start();
             }
         }
-        checkCompletion();
-        System.out.println("BOARD end click\n");
+        System.out.println("");
     }//GEN-LAST:event_flipButtonActionPerformed
 
+    /**
+     * If a property changed, fire a label change to the listeners
+     * 
+     * @param evt 
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        System.out.println("BOARD executing property change");
+        System.out.println("BOARD property change");
         String propertyName = evt.getPropertyName();
         if (!propertyName.equals("label")) {
             return;
@@ -316,13 +331,14 @@ public class EightBoard extends javax.swing.JFrame implements PropertyChangeList
         int label1 = Integer.parseInt(tiles[pos1].getLabel());
         int label2 = Integer.parseInt(tiles[pos2].getLabel());
 
-        System.out.println("BOARD switching pos " + pos1 + ":" + pos2 + " labels " + label1 + ":" + label2);
-        tiles[pos1].updateLabel(label2);
-        tiles[pos2].updateLabel(label1);
+        this.firePropertyChange("label", label1, label2);
 
         checkCompletion();
     }
 
+    /**
+     * If the puzzle is completed, show a dialog for congratulations!
+     */
     private void checkCompletion() {
         boolean isComplete = true;
 
@@ -336,6 +352,7 @@ public class EightBoard extends javax.swing.JFrame implements PropertyChangeList
         if (isComplete && this.eightController1.getText().equals("OK")) {
             SwingUtilities.invokeLater(() -> {
                 try {
+                    // Wait, in order to be able to see all the tiles green before the dialog
                     Thread.sleep(100);
                     JOptionPane.showMessageDialog(this, "Puzzle completed", "Well done!", JOptionPane.INFORMATION_MESSAGE);
                 } catch (InterruptedException e) {
@@ -345,6 +362,11 @@ public class EightBoard extends javax.swing.JFrame implements PropertyChangeList
         }
     }
 
+    /**
+     * Generate a random configuration for the puzzle
+     * 
+     * @return int[9] containing [1,9] in random order
+     */
     private int[] randomLabels() {
         int[] array = {1, 2, 3, 4, 5, 6, 7, 8, 9};
         Random random = new Random();
@@ -355,7 +377,7 @@ public class EightBoard extends javax.swing.JFrame implements PropertyChangeList
             array[i] = array[j];
             array[j] = temp;
         }
-        
+
         return array;
     }
 

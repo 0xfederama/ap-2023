@@ -16,22 +16,34 @@ public class EightController extends JLabel implements VetoableChangeListener, P
 
     private final int hole = 9;
     private int[] labels;
-    private PropertyChangeSupport propertyChange = new PropertyChangeSupport(this);
+    private final PropertyChangeSupport propertyChange = new PropertyChangeSupport(this);
 
     public EightController() {
         this.setText("START");
-//        propertyChange = new PropertyChangeSupport(this);
     }
 
+    /**
+     * Given the label, find the position of the label in the array
+     * 
+     * @param label
+     * @return index of the label in the array, -1 if not found
+     */
     private int getPosOfLabel(int label) {
         for (int i = 0; i < 9; i++) {
-            if (labels[i] == label) {
+            if (this.labels[i] == label) {
                 return i;
             }
         }
         return -1;
     }
 
+    /**
+     * Given two positions in the array, find if they're adjacent
+     * 
+     * @param pos1
+     * @param pos2
+     * @return true if pos1 adj pos, false otherwise
+     */
     private boolean arePosAdjacent(int pos1, int pos2) {
         switch (pos1) {
             case 0:
@@ -56,41 +68,64 @@ public class EightController extends JLabel implements VetoableChangeListener, P
         return false;
     }
 
-    public void handleLabel(PropertyChangeEvent evt) throws PropertyVetoException {
-        System.out.println("CTRL executing handle label");
+    /**
+     * Handle change of label based on event
+     * 
+     * @param evt
+     * @throws PropertyVetoException if clicked on hole OR if old and hole are not adjacent
+     */
+    private void handleLabel(PropertyChangeEvent evt) throws PropertyVetoException {
         int oldLabel = (int) evt.getOldValue();
         int newLabel = (int) evt.getNewValue();
         System.out.println("CTRL moving " + oldLabel + " to " + newLabel);
 
         int pos1 = getPosOfLabel(oldLabel);
         int pos2 = getPosOfLabel(newLabel);
+        
+        // veto if not ok
         if (oldLabel == hole || !arePosAdjacent(pos1, pos2)) {
             this.setText("KO");
             throw new PropertyVetoException("Cannot switch tiles", evt);
         }
 
+        // set text and notify all listeners
         this.setText("OK");
         this.myFirePropertyChange(evt.getPropertyName(), pos1, pos2);
 
-        int temp = labels[pos1];
-        labels[pos1] = labels[pos2];
-        labels[pos2] = temp;
+        int temp = this.labels[pos1];
+        this.labels[pos1] = this.labels[pos2];
+        this.labels[pos2] = temp;
 
     }
 
-    public void handleFlip(PropertyChangeEvent evt) throws PropertyVetoException {
-        System.out.println("CTRL executing handle flip");
-        if (labels[8] != hole) {
+    /**
+     * Handle flip based on event
+     * 
+     * @param evt
+     * @throws PropertyVetoException if hole is not in last position
+     */
+    private void handleFlip(PropertyChangeEvent evt) throws PropertyVetoException {
+        if (this.labels[8] != hole) {
+            System.out.println("CTRL cannot execute flip");
             throw new PropertyVetoException("Hole is not in last position", evt);
         }
-        int temp = labels[0];
-        labels[0] = labels[1];
-        labels[1] = temp;
+        
+        this.myFirePropertyChange("label", 0, 1);
+        
+        int temp = this.labels[0];
+        this.labels[0] = this.labels[1];
+        this.labels[1] = temp;
     }
 
+    /** 
+     * Handle vetoable changes (label and flip)
+     * 
+     * @param evt
+     * @throws PropertyVetoException according to handle label and flip
+     */
     @Override
     public void vetoableChange(PropertyChangeEvent evt) throws PropertyVetoException {
-        System.out.println("CTRL executing vetoable change");
+        System.out.println("CTRL executing vetoable change (label or flip)");
         switch (evt.getPropertyName()) {
             case "label" ->
                 this.handleLabel(evt);
@@ -99,28 +134,49 @@ public class EightController extends JLabel implements VetoableChangeListener, P
         }
     }
 
+    /**
+     * Handle property change (restart)
+     * 
+     * @param evt 
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         System.out.println("CTRL executing property change");
         String propertyName = evt.getPropertyName();
         if (propertyName.equals("restart")) {
-            labels = (int[]) evt.getNewValue();
-            System.out.println(Arrays.toString(labels));
+            this.labels = (int[]) evt.getNewValue();
+            System.out.println(Arrays.toString(this.labels));
         }
     }
 
+    /**
+     * Wrapper to add property change listener to internal private variable
+     * 
+     * @param l 
+     */
     public void myAddPropertyChangeListener(PropertyChangeListener l) {
-        propertyChange.addPropertyChangeListener(l);
+        this.propertyChange.addPropertyChangeListener(l);
     }
 
+    /**
+     * Wrapper to remove property change listener to internal private variable
+     * 
+     * @param l 
+     */
     public void myRemovePropertyChangeListener(PropertyChangeListener l) {
-        propertyChange.removePropertyChangeListener(l);
+        this.propertyChange.removePropertyChangeListener(l);
     }
 
+    /**
+     * Fire a property change
+     * 
+     * @param propertyName 
+     * @param oldValue 
+     * @param newValue 
+     */
     public void myFirePropertyChange(String propertyName, Object oldValue, Object newValue) {
-        System.out.println("CTRL executing my fire property change");
-        PropertyChangeEvent evt = new PropertyChangeEvent(propertyChange, propertyName, oldValue, newValue);
-        for (PropertyChangeListener l : propertyChange.getPropertyChangeListeners()) {
+        PropertyChangeEvent evt = new PropertyChangeEvent(this.propertyChange, propertyName, oldValue, newValue);
+        for (PropertyChangeListener l : this.propertyChange.getPropertyChangeListeners()) {
             l.propertyChange(evt);
         }
     }
