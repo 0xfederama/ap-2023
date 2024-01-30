@@ -71,7 +71,7 @@ def do_nothing():
 
 def test(iter, fun, args):
     for n_threads in [1, 2, 4, 8]:
-        seq_iter = int(iter / n_threads)
+        seq_iter = int(16 / n_threads)
         res = bench(n_threads, seq_iter, iter)(fun)(*args)
         print(res)
 
