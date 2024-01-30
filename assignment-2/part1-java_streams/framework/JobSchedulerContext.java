@@ -1,15 +1,16 @@
+package framework;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public abstract class JobScheduler<K, V> {
+public class JobSchedulerContext<K, V> {
 
-    /**
-     * Hot stop: must be overridden.
-     *
-     * @return a stream of jobs to be executed by compute
-     */
-    protected abstract Stream<AJob<K, V>> emit();
+    private JobSchedulerStrategy<K, V> schedulerStrategy;
+
+    public JobSchedulerContext(JobSchedulerStrategy<K, V> schedulerStrategy) {
+        this.schedulerStrategy = schedulerStrategy;
+    }
 
     /**
      * Frozen spot: executes the jobs.
@@ -39,17 +40,10 @@ public abstract class JobScheduler<K, V> {
     }
 
     /**
-     * Hot spot: must be overridden.
-     *
-     * @param result
-     */
-    protected abstract void output(Stream<Pair<K, List<V>>> result);
-
-    /**
      * Execute, in order: emit, compute, collect, output.
      */
     public void main() {
-        output(collect(compute(emit())));
+        schedulerStrategy.output(collect(compute(schedulerStrategy.emit())));
     }
 
 }

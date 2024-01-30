@@ -3,6 +3,9 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
+import framework.AJob;
+import framework.Pair;
+
 public class CiaoJob extends AJob<String, String> {
     private final String filename;
 

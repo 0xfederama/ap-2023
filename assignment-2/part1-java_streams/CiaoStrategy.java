@@ -6,11 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class CiaoScheduler extends JobScheduler<String, String> {
+import framework.AJob;
+import framework.JobSchedulerStrategy;
+import framework.Pair;
+
+public class CiaoStrategy implements JobSchedulerStrategy<String, String> {
 
     private final String dirname;
 
-    public CiaoScheduler(String dirname) {
+    public CiaoStrategy(String dirname) {
         this.dirname = dirname;
     }
 
@@ -20,7 +24,7 @@ public class CiaoScheduler extends JobScheduler<String, String> {
      * @return a stream of jobs
      */
     @Override
-    protected Stream<AJob<String, String>> emit() {
+    public Stream<AJob<String, String>> emit() {
         File dir = new File(dirname);
 
         List<AJob<String, String>> jobs = new ArrayList<>();
@@ -35,12 +39,13 @@ public class CiaoScheduler extends JobScheduler<String, String> {
 
     /**
      * Writes the result of the jobs execution to "count_anagrams.txt".
-     * For each pair, print to file the ciao of the word and the number of words that have that ciao.
+     * For each pair, print to file the ciao of the word and the number of words
+     * that have that ciao.
      *
      * @param the stream of pairs to write to file
      */
     @Override
-    protected void output(Stream<Pair<String, List<String>>> result) {
+    public void output(Stream<Pair<String, List<String>>> result) {
         // open the writer to the file
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("count_anagrams.txt")))) {
             result.forEach(pair -> {

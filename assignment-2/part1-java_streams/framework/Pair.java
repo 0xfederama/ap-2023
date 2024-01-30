@@ -1,3 +1,5 @@
+package framework;
+
 public class Pair<K, V> {
 
     K key;
