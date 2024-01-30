@@ -64,6 +64,11 @@ def grezzo(n):
         pass
 
 
+@bench(2, 2, 2)
+def do_nothing():
+    print("nothing")
+
+
 def test(iter, fun, args):
     for n_threads in [1, 2, 4, 8]:
         seq_iter = int(iter / n_threads)
@@ -77,6 +82,11 @@ def test(iter, fun, args):
 
 
 if __name__ == "__main__":
+
+    do_nothing()
+    print()
+
+    # start of the exercise
     test(16, grezzo, (10,))
     print()
     test(16, just_wait, (1,))
