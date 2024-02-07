@@ -5,10 +5,15 @@
 		<surname type="String">Ramacciotti</surname>
 		<age type="int">24</age>
 	</Student>
+	<Student>
+		<firstname type="String">Mario</firstname>
+		<surname type="String">Rossi</surname>
+		<age type="int">30</age>
+	</Student>
 	<notXMLable />
 	<Teacher>
-		<firstname type="String">Robert</firstname>
-		<surname type="String">Oppenheimer</surname>
+		<firstname type="String">Albert</firstname>
+		<surname type="String">Einstein</surname>
 		<inactivity type="boolean">false</inactivity>
 	</Teacher>
 </Objects>

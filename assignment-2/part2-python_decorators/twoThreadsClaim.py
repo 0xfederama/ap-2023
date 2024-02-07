@@ -82,7 +82,6 @@ def test(iter, fun, args):
 
 
 if __name__ == "__main__":
-
     do_nothing()
     print()
 

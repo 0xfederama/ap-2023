@@ -1,3 +1,6 @@
+import XMLSerializer.XMLable;
+import XMLSerializer.XMLfield;
+
 @XMLable
 public class Student {
 

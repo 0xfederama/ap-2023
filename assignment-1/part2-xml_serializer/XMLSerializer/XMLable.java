@@ -1,3 +1,5 @@
+package XMLSerializer;
+
 import java.lang.annotation.*;
 
 @Retention(RetentionPolicy.RUNTIME)
