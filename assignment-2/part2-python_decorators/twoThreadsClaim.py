@@ -5,15 +5,15 @@ import statistics
 import json
 
 
-def run_times(f, times, args, kwargs):
-    for _ in range(times):
-        f(*args, **kwargs)
-
-
 def bench(n_threads=1, seq_iter=1, iter=1):
     def decorator_bench(func):
         @functools.wraps(func)
         def wrapper_bench(*args, **kwargs):
+            # function to run func for seq_iter times
+            def run_times(*args, **kwargs):
+                for _ in range(seq_iter):
+                    func(*args, *kwargs)
+
             results = []
 
             # do everything iter times
@@ -23,9 +23,7 @@ def bench(n_threads=1, seq_iter=1, iter=1):
                 # launch n threads
                 threads = []
                 for _ in range(n_threads):
-                    t = threading.Thread(
-                        target=run_times, args=(func, seq_iter, args, kwargs)
-                    )
+                    t = threading.Thread(target=run_times, args=args, kwargs=kwargs)
                     threads.append(t)
                     t.start()
                 # join threads
@@ -69,7 +67,7 @@ def do_nothing():
     print("nothing")
 
 
-def test(iter, fun, args):
+def test(iter, fun, *args):
     for n_threads in [1, 2, 4, 8]:
         seq_iter = int(16 / n_threads)
         res = bench(n_threads, seq_iter, iter)(fun)(*args)
@@ -86,9 +84,9 @@ if __name__ == "__main__":
     print()
 
     # start of the exercise
-    test(16, grezzo, (10,))
+    test(16, grezzo, 10)
     print()
-    test(16, just_wait, (1,))
+    test(16, just_wait, 1)
 
 
 """ Results
